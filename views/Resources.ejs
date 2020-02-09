@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Resources</title>
+    <title>Allocation</title>
+<style>
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=datetime-local], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+div {
+    border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 250px;
+position: absolute;
+	top:100;
+	bottom: 250;
+	left: 0;
+	right: 0;
+  	
+	margin: auto;
+}
+p{
+   text-align: center;
+}
+body{
+   text-align: center;
+  margin: 150px;
+
+}
+</style>
 </head>
 <body>
-
-<form action="/Resource1" method='get'>
-    <p>Resource -> </p><input type="submit" value="R1">
-</form>
-
-<form action="/Resource2" method='get'>
-    <p>Resource -> </p><input type="submit" value="R2">
-</form>
-
-<form action="/Resource3" method='get'>
-    <p>Resource -> </p><input type="submit" value="R3">
-</form>
-
-<form action="/Resource4" method='get'>
-    <p>Resource -> </p><input type="submit" value="R4">
-</form>
-
-<form action="/Resource5" method='get'>
-    <p>Resource -> </p><input type="submit" value="R5">
-</form>
-
+    <div>
+    <form action="/Resource" method='get'>
+    <p>Resources</p>
+    <input id="R1" type="submit" value="R1" style="background-color: <%= c1 %>" onclick="document.forms[0].action+='/'+this.id;return true;">
+    <input id="R2" type="submit" value="R2" style="background-color: <%= c2 %>" onclick="document.forms[0].action+='/'+this.id;return true;">
+    <input id="R3" type="submit" value="R3" style="background-color: <%= c3 %>" onclick="document.forms[0].action+='/'+this.id;return true;">
+    <input id="R4" type="submit" value="R4" style="background-color: <%= c4 %>" onclick="document.forms[0].action+='/'+this.id;return true;">
+    <input id="R5" type="submit" value="R5" style="background-color: <%= c5 %>" onclick="document.forms[0].action+='/'+this.id;return true;">
+    </form>
+      </div>
 </body>
 </html>

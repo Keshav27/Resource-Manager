@@ -67,13 +67,19 @@ body{
     
         
                 <form action="/accept" method="post" >
-                    <input type="submit" value="Accept" class="button"><br><br>
+                    <input id="kkk" type="submit" value="Accept" class="button"><br><br>
                 </form>
        
                 <form action="/reject" method="post">
-                    <input type="submit" value="Reject" class="button">
+                    <input id="kkk" type="submit" value="Reject" class="button">
                 </form>
          
    </div> 
+   <script>
+    kkk.addEventListener('click',function(){
+            window.location.replace('Resources')
+        })
+   </script>
+   </script>
 </body>
 </html>
