@@ -18,10 +18,12 @@ var allocated="";
 require('./EmployeeSchema')
 require('./ResourceSchema')
 require('./RequestSchema')
+require('./AdminSchema')
 mongoose.connect('mongodb+srv://keshav27:keshav27@cluster0-mtsng.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true });
 var Employee=mongoose.model('EmployerDB')
 var Resource=mongoose.model('Resource')
 var Requester=mongoose.model('Request')
+var admin=mongoose.model('admin')
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb+srv://keshav27:keshav27@cluster0-mtsng.mongodb.net/test?retryWrites=true&w=majority';
 app.use(session({
@@ -44,11 +46,19 @@ app.post('/login_validation',function(req,res){
                 res.send({status:'Invalid'});
             }else if(err){
                 console.log(err);
-            }else{
+            }
+            
+            else{
                 email=docs[0].email;
                 ename=docs[0].name;
                 var pass=req.body.empass;
                 var dpass=docs[0].password;
+                if(req.body.empid=="1234"&&req.body.empass=="1234"){
+                      res.send({status:'adminlogin'})
+                }
+
+
+                else
                 if(pass==dpass){
                     //console.log("EQUAL")
                     var emp={
@@ -56,7 +66,8 @@ app.post('/login_validation',function(req,res){
                     }
                     req.session.emp=emp;
                     res.send({status:'home'})
-                }else{
+                }
+                else{
                    // console.log("NOT EQUAL")
                     res.send({status:'Invalid'});
                 }
@@ -67,6 +78,10 @@ app.post('/login_validation',function(req,res){
 app.get('/register',function(req,res){
     res.render('register.ejs');
 })
+app.get('/admin',function(req,res){
+    res.render('admin.ejs')
+})
+
 app.post('/registration',function(req,res){
 
     Employee.find({empid: req.body.empid},(err,docs)=>{
@@ -98,16 +113,10 @@ app.get('/regerror',function(req,res){
 })
 
 app.get('/Resources',function(req,res){
-
-
-
-
-
-
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         var dbo = db.db("test");
-        dbo.collection("resavailable").find({}).toArray(function(err, result) {
+        dbo.collection("admins").find({}).toArray(function(err, result) {
           if (err) throw err;
           console.log(result);
           console.log(result[0].resname);
@@ -122,35 +131,69 @@ app.get('/Resources',function(req,res){
         
       });
 
+})
+
+app.get("/pending",function(req,res){
+    res.render("accept.ejs");
+})
+
+app.post("/pending",function(req,res){
+    Requester.find({resholdername: email},(err,docs)=>{
+        if(err){
+            console.log(err);
+        }
+        if(Object.keys(docs).length!=0){
+
+            var name=docs[0].resourcewant;
+            console.log(name);
+            res.render('accept.ejs',{namee:name});
+        }
+        else{   
+             res.render('Resources.ejs');
+        }
+    })
+})
+
+app.get("/addResource",function(req,res){
+    res.render('admin.ejs');
+})
+
+app.post("/addResource",function(req,res){
+    var add=req.body.addreso;
+    
+    console.log(req.body.addreso);
 
 
-
-
-
-
-
-
-
-
-    // Requester.find({resholdername: email},(err,docs)=>{
-    //     if(err){
-    //         console.log(err);
-    //     }
-    //     if(Object.keys(docs).length!=0){
-
-    //         var name=docs[0].resourcewant;
-    //         console.log(name);
-    //         res.render('accept.ejs',{namee:name});
-    //     }
-    //     else{   
-    //          res.render('Resources.ejs');
-    //     }
-    // })
-
-
+    admin.find({resname: req.body.addreso},(err,docs)=>{
+        if(err){
+            console.log(err);
+        }
+        if(Object.keys(docs).length!=0){
+            res.send({status:'Error'});
+        }else{
+            var ad=new admin();
+            ad.resname=req.body.addreso;
+            console.log(req.body.addreso);
+            ad.save((err,doc)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('Inserted');
+                }
+            })
+            res.send({status:'Registered'});
+        }
+    })
 
 
 })
+
+
+
+
+
+
+
 var iffind="no";
 app.get('/Resource/:id',function(req,res){
     var c=req.param('id');
@@ -285,7 +328,23 @@ app.post('/accept',function(req,res){
                 res.render('accept.ejs',{namee:name});
             }
             else{   
-                res.render('Resources.ejs');
+                MongoClient.connect(url, function(err, db) {
+                    if (err) throw err;
+                    var dbo = db.db("test");
+                    dbo.collection("admins").find({}).toArray(function(err, result) {
+                      if (err) throw err;
+                      console.log(result);
+                      console.log(result[0].resname);
+                      console.log(result.length);
+                      for(var i=0;i<result.length;i++)
+                      {
+                          console.log(result[i].resname);
+                      }
+                      db.close();
+                      res.render('Resources.ejs',{contacts:result});
+                    });
+                    
+                  });
             }      
         })
     
@@ -298,16 +357,23 @@ app.get('/reject',function(req,res){
 
 
 app.post('/reject',function(req,res){
-    Requester.find({resholdername: email},(err,docs)=>{
-        if(err){
-            console.log(err);
-        }
-        if(Object.keys(docs).length!=0){
-
-            var name=docs[0].resourcewant;
-             
-        }
-    })
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("test");
+        dbo.collection("admins").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          console.log(result);
+          console.log(result[0].resname);
+          console.log(result.length);
+          for(var i=0;i<result.length;i++)
+          {
+              console.log(result[i].resname);
+          }
+          db.close();
+          res.render('Resources.ejs',{contacts:result});
+        });
+        
+      });
 })
 
 

@@ -54,29 +54,15 @@ body{
 </style>
 </head>
 <body>
-
     <div>
-    <form action="/Resource" method='get'>
-    <section class="home">
-      <p>Resources</p>
-      <ul class="list-group">
-          <% for(var i=0; i<contacts.length; i++) {%>
-                  <input id=<%= contacts[i].resname %> type="submit" value=<%= contacts[i].resname %> onclick="document.forms[0].action+='/'+this.id;return true;">
-                  <br/>
-          <% } %>
-      </ul>
-      </section>
+    <form action="/addResource" method='post'>
+        <input type="text" name="addreso" placeholder="Add Resource">
+        <input type="submit" value="Add resource" class="button">
       </form>
-      <br><br><br>
-      <div>
-      <form action="pending" method="Post">
-      
-      <input type ="submit" value="Requests" class="button">
-      </form>
-      <form >
-      <input type ="submit" value="Logout" class="button">
-      </form>
-      </div>
-      </div>
+      <form action="/removeResource" method='post'>
+       <input type="text" name="remreso" placeholder="Remove Resource">
+       <input type="submit" value="Remove resource" class="button">
+      </form>  
+    </div>
 </body>
 </html>

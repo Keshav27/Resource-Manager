@@ -82,7 +82,12 @@
                 if(jsonres.status=='Invalid'){    
                     document.getElementById('login_invalid').innerHTML="* Invalid Credentials";           
                     // window.location.replace('/')
-                }else{
+                }else if(jsonres.status=='adminlogin')
+                {
+                    window.location.replace('admin')
+                }
+                
+                else{
                     console.log("login ok");
                     window.location.replace('Resources')
                 }
