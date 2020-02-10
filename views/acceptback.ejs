@@ -21,6 +21,8 @@ input[type=datetime-local], select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+
 input[type=submit] {
   width: 100%;
   background-color: #4CAF50;
@@ -31,40 +33,56 @@ input[type=submit] {
   border-radius: 4px;
   cursor: pointer;
 }
+
+
 div {
     border-radius: 5px;
   background-color: #f2f2f2;
+  margin: 150px;
   padding: 20px;
   width: 250px;
+  text-align: center;
+
 position: absolute;
 	top:100;
 	bottom: 250;
 	left: 0;
 	right: 0;
-  	
+
 	margin: auto;
 }
 p{
    text-align: center;
 }
-body{
-   text-align: center;
-  margin: 150px;
+
+
+input[type=button] {
+  width: 10%;
+  background-color: #a9a9a9;
+  color: white;
+  padding: 14px 0px;
+  margin: 18px 0;
+
+ position: absolute; right: 0;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
 </head>
 <body>
     <div>
-    <form action="/Resource" method='get'>
-    <section class="home">
-      <p>Resources</p>
-      <ul class="list-group">
-          <% for(var i=0; i<contacts.length; i++) {%>
-                  <input id=<%= contacts[i].resname %> type="submit" value=<%= contacts[i].resname %> onclick="document.forms[0].action+='/'+this.id;return true;">
-                  <br/>
-          <% } %>
-      </ul>
-      </section>
-      </form>
+        <form action="/back" method="post"></form>
+        <p><b>NO REQUESTS</b></p>
+        <input type ="submit" value="Go Back" class="button">
+        </form>
+    </div> 
 </body>
 </html>
+
+
+
+
+
+

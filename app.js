@@ -22,7 +22,8 @@ mongoose.connect('mongodb+srv://keshav27:keshav27@cluster0-mtsng.mongodb.net/tes
 var Employee=mongoose.model('EmployerDB')
 var Resource=mongoose.model('Resource')
 var Requester=mongoose.model('Request')
-
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb+srv://keshav27:keshav27@cluster0-mtsng.mongodb.net/test?retryWrites=true&w=majority';
 app.use(session({
     cookieName: 'session',
     secret: 'random_string_goes_here',
@@ -99,76 +100,52 @@ app.get('/regerror',function(req,res){
 app.get('/Resources',function(req,res){
 
 
-    Requester.find({resholdername: email},(err,docs)=>{
-        if(err){
-            console.log(err);
-        }
-        if(Object.keys(docs).length!=0){
 
-            var name=docs[0].resourcewant;
-            console.log(name);
-            res.render('accept.ejs',{namee:name});
-        }
-        else{   
-             var r1color,r2color,r3color,r4color,r5color;
-             Resource.find({resname: "R1"},(err,docs)=>{
-                if(err){
-                    console.log(err);
-                }
-                if(Object.keys(docs).length!=0){
-                    r1color="#ff0000";
-                }
-                else{
-                    r1color="#4CAF50";
-                }
-                Resource.find({resname: "R2"},(err,docs)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                    if(Object.keys(docs).length!=0){
-                        r2color="#ff0000";
-                    }
-                    else{
-                        r2color="#4CAF50";
-                    }
-                    Resource.find({resname: "R3"},(err,docs)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                        if(Object.keys(docs).length!=0){
-                            r3color="#ff0000";
-                        }
-                        else{
-                            r3color="#4CAF50";
-                        }
-                        Resource.find({resname: "R4"},(err,docs)=>{
-                            if(err){
-                                console.log(err);
-                            }
-                            if(Object.keys(docs).length!=0){
-                                r4color="#ff0000";
-                            }
-                            else{
-                                r4color="#4CAF50";
-                            }
-                            Resource.find({resname: "R5"},(err,docs)=>{
-                                if(err){
-                                    console.log(err);
-                                }
-                                if(Object.keys(docs).length!=0){
-                                    r5color="#ff0000";
-                                }
-                                else{
-                                    r5color="#4CAF50";
-                                     }
-                                     res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
-                                })
-                            })
-                        })
-                    })
-            })
-        }
-    })
+
+
+
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("test");
+        dbo.collection("resavailable").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          console.log(result);
+          console.log(result[0].resname);
+          console.log(result.length);
+          for(var i=0;i<result.length;i++)
+          {
+              console.log(result[i].resname);
+          }
+          db.close();
+          res.render('Resources.ejs',{contacts:result});
+        });
+        
+      });
+
+
+
+
+
+
+
+
+
+
+
+    // Requester.find({resholdername: email},(err,docs)=>{
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     if(Object.keys(docs).length!=0){
+
+    //         var name=docs[0].resourcewant;
+    //         console.log(name);
+    //         res.render('accept.ejs',{namee:name});
+    //     }
+    //     else{   
+    //          res.render('Resources.ejs');
+    //     }
+    // })
 
 
 
@@ -266,64 +243,7 @@ app.get('/back',function(req,res){
 })
 app.post('/back',function(req,res){
   
-             var r1color,r2color,r3color,r4color,r5color;
-             Resource.find({resname: "R1"},(err,docs)=>{
-                if(err){
-                    console.log(err);
-                }
-                if(Object.keys(docs).length!=0){
-                    r1color="#ff0000";
-                }
-                else{
-                    r1color="#4CAF50";
-                }
-                Resource.find({resname: "R2"},(err,docs)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                    if(Object.keys(docs).length!=0){
-                        r2color="#ff0000";
-                    }
-                    else{
-                        r2color="#4CAF50";
-                    }
-                    Resource.find({resname: "R3"},(err,docs)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                        if(Object.keys(docs).length!=0){
-                            r3color="#ff0000";
-                        }
-                        else{
-                            r3color="#4CAF50";
-                        }
-                        Resource.find({resname: "R4"},(err,docs)=>{
-                            if(err){
-                                console.log(err);
-                            }
-                            if(Object.keys(docs).length!=0){
-                                r4color="#ff0000";
-                            }
-                            else{
-                                r4color="#4CAF50";
-                            }
-                            Resource.find({resname: "R5"},(err,docs)=>{
-                                if(err){
-                                    console.log(err);
-                                }
-                                if(Object.keys(docs).length!=0){
-                                    r5color="#ff0000";
-                                }
-                                else{
-                                    r5color="#4CAF50";
-                                     }
-                                     res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
-                                })
-                            })
-                        })
-                    })
-                
-                })
+    res.render('Resources.ejs');
         
 })
 
@@ -365,65 +285,8 @@ app.post('/accept',function(req,res){
                 res.render('accept.ejs',{namee:name});
             }
             else{   
-                 var r1color,r2color,r3color,r4color,r5color;
-                 Resource.find({resname: "R1"},(err,docs)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                    if(Object.keys(docs).length!=0){
-                        r1color="#ff0000";
-                    }
-                    else{
-                        r1color="#4CAF50";
-                    }
-                    Resource.find({resname: "R2"},(err,docs)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                        if(Object.keys(docs).length!=0){
-                            r2color="#ff0000";
-                        }
-                        else{
-                            r2color="#4CAF50";
-                        }
-                        Resource.find({resname: "R3"},(err,docs)=>{
-                            if(err){
-                                console.log(err);
-                            }
-                            if(Object.keys(docs).length!=0){
-                                r3color="#ff0000";
-                            }
-                            else{
-                                r3color="#4CAF50";
-                            }
-                            Resource.find({resname: "R4"},(err,docs)=>{
-                                if(err){
-                                    console.log(err);
-                                }
-                                if(Object.keys(docs).length!=0){
-                                    r4color="#ff0000";
-                                }
-                                else{
-                                    r4color="#4CAF50";
-                                }
-                                Resource.find({resname: "R5"},(err,docs)=>{
-                                    if(err){
-                                        console.log(err);
-                                    }
-                                    if(Object.keys(docs).length!=0){
-                                        r5color="#ff0000";
-                                    }
-                                    else{
-                                        r5color="#4CAF50";
-                                         }
-                                         res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
-                                    })
-                                })
-                            })
-                        })
-                    
-                    })
-            }
+                res.render('Resources.ejs');
+            }      
         })
     
 })
@@ -442,64 +305,7 @@ app.post('/reject',function(req,res){
         if(Object.keys(docs).length!=0){
 
             var name=docs[0].resourcewant;
-             var r1color,r2color,r3color,r4color,r5color;
-             Resource.find({resname: "R1"},(err,docs)=>{
-                if(err){
-                    console.log(err);
-                }
-                if(Object.keys(docs).length!=0){
-                    r1color="#ff0000";
-                }
-                else{
-                    r1color="#4CAF50";
-                }
-                Resource.find({resname: "R2"},(err,docs)=>{
-                    if(err){
-                        console.log(err);
-                    }
-                    if(Object.keys(docs).length!=0){
-                        r2color="#ff0000";
-                    }
-                    else{
-                        r2color="#4CAF50";
-                    }
-                    Resource.find({resname: "R3"},(err,docs)=>{
-                        if(err){
-                            console.log(err);
-                        }
-                        if(Object.keys(docs).length!=0){
-                            r3color="#ff0000";
-                        }
-                        else{
-                            r3color="#4CAF50";
-                        }
-                        Resource.find({resname: "R4"},(err,docs)=>{
-                            if(err){
-                                console.log(err);
-                            }
-                            if(Object.keys(docs).length!=0){
-                                r4color="#ff0000";
-                            }
-                            else{
-                                r4color="#4CAF50";
-                            }
-                            Resource.find({resname: "R5"},(err,docs)=>{
-                                if(err){
-                                    console.log(err);
-                                }
-                                if(Object.keys(docs).length!=0){
-                                    r5color="#ff0000";
-                                }
-                                else{
-                                    r5color="#4CAF50";
-                                     }
-                                     res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
-                                })
-                            })
-                        })
-                    })
-                
-                })
+             
         }
     })
 })
