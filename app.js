@@ -166,8 +166,7 @@ app.get('/Resources',function(req,res){
                             })
                         })
                     })
-                
-                })
+            })
         }
     })
 
@@ -175,7 +174,7 @@ app.get('/Resources',function(req,res){
 
 
 })
-
+var iffind="no";
 app.get('/Resource/:id',function(req,res){
     var c=req.param('id');
     resourcename=req.param('id');
@@ -204,11 +203,9 @@ app.get('/Resource/:id',function(req,res){
 })
 var holder="";
 var resourcename="";
-var iffind="no";
+
 app.post('/Resource/:id',function(req,res){
-    console.log(req.param);
     var c=req.param('id');
-    console.log(c);
     resourcename=req.param('id');    
     res.render('alocation.ejs');
 })
@@ -231,7 +228,7 @@ app.post('/alocation',function(req,res){
                     console.log("update document success");
                 }
             })
-            res.render('login.ejs');
+            res.render('Thanks.ejs');
             
             
         }
@@ -252,12 +249,12 @@ app.post('/alocation',function(req,res){
                 console.log('Inserted');
             }
             })
-            //res.render('login.ejs');
+            
             
 
         }
     })
-    res.send("bye")
+    res.render('Thanks.ejs');
 })
 
 app.get('/accept',function(req,res){
@@ -268,8 +265,68 @@ app.get('/back',function(req,res){
     res.render('Resources.ejs');
 })
 app.post('/back',function(req,res){
-    res.render('Resources.ejs');
+  
+             var r1color,r2color,r3color,r4color,r5color;
+             Resource.find({resname: "R1"},(err,docs)=>{
+                if(err){
+                    console.log(err);
+                }
+                if(Object.keys(docs).length!=0){
+                    r1color="#ff0000";
+                }
+                else{
+                    r1color="#4CAF50";
+                }
+                Resource.find({resname: "R2"},(err,docs)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    if(Object.keys(docs).length!=0){
+                        r2color="#ff0000";
+                    }
+                    else{
+                        r2color="#4CAF50";
+                    }
+                    Resource.find({resname: "R3"},(err,docs)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                        if(Object.keys(docs).length!=0){
+                            r3color="#ff0000";
+                        }
+                        else{
+                            r3color="#4CAF50";
+                        }
+                        Resource.find({resname: "R4"},(err,docs)=>{
+                            if(err){
+                                console.log(err);
+                            }
+                            if(Object.keys(docs).length!=0){
+                                r4color="#ff0000";
+                            }
+                            else{
+                                r4color="#4CAF50";
+                            }
+                            Resource.find({resname: "R5"},(err,docs)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                if(Object.keys(docs).length!=0){
+                                    r5color="#ff0000";
+                                }
+                                else{
+                                    r5color="#4CAF50";
+                                     }
+                                     res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
+                                })
+                            })
+                        })
+                    })
+                
+                })
+        
 })
+
 app.post('/accept',function(req,res){   
     var want=""
     Requester.find({resholdername:email},(err,docs)=>{
@@ -278,7 +335,6 @@ app.post('/accept',function(req,res){
         }
         if(Object.keys(docs).length!=0){
             want=docs[0].resourcewant;
-            console.log("=====>"+want);
         }
     })
         var obj1=mongoose.model('Request');
@@ -379,6 +435,73 @@ app.get('/reject',function(req,res){
 
 
 app.post('/reject',function(req,res){
+    Requester.find({resholdername: email},(err,docs)=>{
+        if(err){
+            console.log(err);
+        }
+        if(Object.keys(docs).length!=0){
+
+            var name=docs[0].resourcewant;
+             var r1color,r2color,r3color,r4color,r5color;
+             Resource.find({resname: "R1"},(err,docs)=>{
+                if(err){
+                    console.log(err);
+                }
+                if(Object.keys(docs).length!=0){
+                    r1color="#ff0000";
+                }
+                else{
+                    r1color="#4CAF50";
+                }
+                Resource.find({resname: "R2"},(err,docs)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    if(Object.keys(docs).length!=0){
+                        r2color="#ff0000";
+                    }
+                    else{
+                        r2color="#4CAF50";
+                    }
+                    Resource.find({resname: "R3"},(err,docs)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                        if(Object.keys(docs).length!=0){
+                            r3color="#ff0000";
+                        }
+                        else{
+                            r3color="#4CAF50";
+                        }
+                        Resource.find({resname: "R4"},(err,docs)=>{
+                            if(err){
+                                console.log(err);
+                            }
+                            if(Object.keys(docs).length!=0){
+                                r4color="#ff0000";
+                            }
+                            else{
+                                r4color="#4CAF50";
+                            }
+                            Resource.find({resname: "R5"},(err,docs)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                if(Object.keys(docs).length!=0){
+                                    r5color="#ff0000";
+                                }
+                                else{
+                                    r5color="#4CAF50";
+                                     }
+                                     res.render('Resources.ejs',{c1:r1color,c2:r2color,c3:r3color,c4:r4color,c5:r5color})
+                                })
+                            })
+                        })
+                    })
+                
+                })
+        }
+    })
 })
 
 
@@ -426,7 +549,7 @@ app.post('/request',function(req,res){
           console.log('Email sent: ' + info.response);
         }
       });
-    res.send('Done');
+    res.render('Thanks.ejs');
 })
 
 
