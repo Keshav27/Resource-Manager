@@ -35,6 +35,7 @@ app.use(session({
 
 var email=""
 var ename=""
+var eid=""
 app.post('/login_validation',function(req,res){
 
     console.log(req.body.empid+"'   '"+req.body.empass);
@@ -49,6 +50,7 @@ app.post('/login_validation',function(req,res){
             }
             
             else{
+                eid=docs[0].empid;
                 email=docs[0].email;
                 ename=docs[0].name;
                 var pass=req.body.empass;
@@ -111,6 +113,8 @@ app.post('/registration',function(req,res){
 app.get('/regerror',function(req,res){
     res.render('regerrpage.ejs');
 })
+var d1=""
+var d2=""
 
 app.get('/Resources',function(req,res){
     MongoClient.connect(url, function(err, db) {
@@ -118,17 +122,20 @@ app.get('/Resources',function(req,res){
         var dbo = db.db("test");
         dbo.collection("admins").find({}).toArray(function(err, result) {
           if (err) throw err;
-          console.log(result);
-          console.log(result[0].resname);
-          console.log(result.length);
-          for(var i=0;i<result.length;i++)
-          {
-              console.log(result[i].resname);
-          }
           db.close();
-          res.render('Resources.ejs',{contacts:result});
+          d1=result;
+         
+   
         });
-        
+        var dbo1 = db.db("test");
+        dbo1.collection("resources").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          db.close();
+          d2=result;
+        //   console.log(d1);
+        //   console.log(d2);
+          res.render('Resources.ejs',{contacts:d1,contact:d2});
+        });
       });
 
 })
@@ -145,8 +152,9 @@ app.post("/pending",function(req,res){
         if(Object.keys(docs).length!=0){
 
             var name=docs[0].resourcewant;
+            var maker=docs[0].requestmaker;
             console.log(name);
-            res.render('accept.ejs',{namee:name});
+            res.render('accept.ejs',{namee:name,makerr:maker});
         }
         else{   
              
@@ -189,6 +197,41 @@ app.post("/addResource",function(req,res){
 
 })
 
+app.get('/Edit_Profile',function(req,res){
+    console.log("outside login ====>"+eid);
+    var obj=mongoose.model('EmployerDB');
+    obj.deleteOne({name:ename},function(err,doc){
+            if (err) {
+               console.log("delete error");
+            } else {
+                console.log("delete success");
+            }
+        
+
+        })
+    res.render('update.ejs',{inform:eid});
+})
+app.post('/Edit_Profile',function(req,res){
+           
+            var emp= new Employee();
+            console.log("outside login"+eid);
+            console.log("outside login+++++++++");
+            emp.empid=req.body.empid;
+            emp.name=req.body.name;
+            emp.password=req.body.password;
+            emp.email=req.body.email;
+            emp.contactno=req.body.contactno;
+            emp.save((err,doc)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('Inserted');
+                }
+            })
+            res.send({status:'Registered'});
+       
+})
+
 app.get("/removeResource",function(req,res){
     res.render('admin.ejs');
 })
@@ -224,7 +267,7 @@ app.post("/removeResource",function(req,res){
 })
 var holder="";
 var resourcename="";
-
+var iffind="no";
 app.get('/Resource/:id',function(req,res){
     var c=req.param('id');
     resourcename=req.param('id');
@@ -243,6 +286,7 @@ app.get('/Resource/:id',function(req,res){
             }
             else{
             iffind="yes";
+            res.render('alocation.ejs');
             }
         }
         else{
@@ -260,7 +304,7 @@ app.post('/Resource/:id',function(req,res){
 app.get('/alocation',function(req,res){
     res.render('alocation.ejs');
 })
-var iffind="no";
+
 app.post('/alocation',function(req,res){
     Resource.find({resname:resourcename},(err,docs)=>{
         if(err){
@@ -268,17 +312,32 @@ app.post('/alocation',function(req,res){
         }
         if(iffind=="yes"){
             
+
             var obj=mongoose.model('Resource');
-            obj.findOneAndUpdate({resname:resourcename},{$set:{restime:req.body.usertime,username:req.body.username}},function(err,doc){
-                if (err) {
-                    console.log("update document error");
-                } else {
-                    console.log("update document success");
+            obj.deleteOne({resname:resourcename},function(err,doc){
+                    if (err) {
+                       console.log("delete error");
+                    } else {
+                        console.log("delete success");
+                    }
+                })
+                let currenttime = Date.now();
+                var requesttime=req.body.usertime;
+                var myDate = new Date(requesttime);
+                var result = myDate.getTime();
+            
+                var resour=new Resource();
+                resour.resname=resourcename;
+                resour.restime=req.body.usertime;
+                resour.username=email;
+                resour.save((err,doc)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('Inserted');
                 }
-            })
-            res.render('Thanks.ejs');
-            
-            
+                })
+            res.render('Thanks.ejs');           
         }
         else{
             let currenttime = Date.now();
@@ -321,17 +380,20 @@ app.post('/back',function(req,res){
         var dbo = db.db("test");
         dbo.collection("admins").find({}).toArray(function(err, result) {
           if (err) throw err;
-          console.log(result);
-          console.log(result[0].resname);
-          console.log(result.length);
-          for(var i=0;i<result.length;i++)
-          {
-              console.log(result[i].resname);
-          }
           db.close();
-          res.render('Resources.ejs',{contacts:result});
+          d1=result;
+         
+   
         });
-        
+        var dbo1 = db.db("test");
+        dbo1.collection("resources").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          db.close();
+          d2=result;
+        //   console.log(d1);
+        //   console.log(d2);
+          res.render('Resources.ejs',{contacts:d1,contact:d2});
+        });
       });
 })
 
@@ -369,8 +431,9 @@ app.post('/accept',function(req,res){
             if(Object.keys(docs).length!=0){
     
                 var name=docs[0].resourcewant;
+                var maker=docs[0].requestmaker;
                 console.log(name);
-                res.render('accept.ejs',{namee:name});
+                res.render('accept.ejs',{namee:name,makerr:maker});
             }
             else{   
                 MongoClient.connect(url, function(err, db) {
@@ -378,17 +441,20 @@ app.post('/accept',function(req,res){
                     var dbo = db.db("test");
                     dbo.collection("admins").find({}).toArray(function(err, result) {
                       if (err) throw err;
-                      console.log(result);
-                      console.log(result[0].resname);
-                      console.log(result.length);
-                      for(var i=0;i<result.length;i++)
-                      {
-                          console.log(result[i].resname);
-                      }
                       db.close();
-                      res.render('Resources.ejs',{contacts:result});
+                      d1=result;
+                     
+               
                     });
-                    
+                    var dbo1 = db.db("test");
+                    dbo1.collection("resources").find({}).toArray(function(err, result) {
+                      if (err) throw err;
+                      db.close();
+                      d2=result;
+                    //   console.log(d1);
+                    //   console.log(d2);
+                      res.render('Resources.ejs',{contacts:d1,contact:d2});
+                    });
                   });
             }      
         })
@@ -408,17 +474,20 @@ app.post('/reject',function(req,res){
         var dbo = db.db("test");
         dbo.collection("admins").find({}).toArray(function(err, result) {
           if (err) throw err;
-          console.log(result);
-          console.log(result[0].resname);
-          console.log(result.length);
-          for(var i=0;i<result.length;i++)
-          {
-              console.log(result[i].resname);
-          }
           db.close();
-          res.render('Resources.ejs',{contacts:result});
+          d1=result;
+         
+   
         });
-        
+        var dbo1 = db.db("test");
+        dbo1.collection("resources").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          db.close();
+          d2=result;
+        //   console.log(d1);
+        //   console.log(d2);
+          res.render('Resources.ejs',{contacts:d1,contact:d2});
+        });
       });
 })
 
