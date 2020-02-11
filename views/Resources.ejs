@@ -32,6 +32,8 @@ input[type=submit] {
   cursor: pointer;
 }
 div {
+   text-align: center;
+  
     border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
@@ -47,36 +49,80 @@ position: absolute;
 p{
    text-align: center;
 }
-body{
-   text-align: center;
-  margin: 150px;
+
+input[type=button]{
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ 
+  float: right;
+  
+  transition: .5s ease;
+  left: 202px;
+  top: 198px;
+    
+
 }
 </style>
 </head>
 <body>
-
+ 
     <div>
+      <br><br>
     <form action="/Resource" method='get'>
     <section class="home">
-      <p>Resources</p>
-      <ul class="list-group">
+      <p><b>RESOURCES</b></p>
+      
           <% for(var i=0; i<contacts.length; i++) {%>
                   <input id=<%= contacts[i].resname %> type="submit" value=<%= contacts[i].resname %> onclick="document.forms[0].action+='/'+this.id;return true;">
                   <br/>
           <% } %>
-      </ul>
+      
       </section>
       </form>
       <br><br><br>
-      <div>
-      <form action="pending" method="Post">
       
-      <input type ="submit" value="Requests" class="button">
-      </form>
-      <form >
-      <input type ="submit" value="Logout" class="button">
-      </form>
+      <div>
+
       </div>
       </div>
+          <form action="/logout" method="get">
+      <input type ="submit" value="Logout" class="button" style="  width: 10%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ 
+  float: right;
+  
+  transition: .5s ease;
+  left: 202px;
+  top: 198px;">
+      </form><br><br><br><br>
+      <form action="/pending" method="Post">
+      <input type ="submit" value="Requests" class="button" style="  width: 10%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ 
+  float: right;
+  
+  transition: .5s ease;
+  left: 202px;
+  top: 198px;">
+      </form>
+<br><br><br><br>
 </body>
 </html>

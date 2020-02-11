@@ -54,14 +54,30 @@ position: absolute;
 p{
    text-align: center;
 }
-body{
-   text-align: center;
-  margin: 150px;
+input[type=button]{
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ 
+  float: right;
+  
+  transition: .5s ease;
+  left: 202px;
+  top: 198px;
+    
 
 }
 </style>
 </head>
 <body>
+        <form action="/logout" method="get">
+      <input type ="button" value="Logout" class="button">
+      </form><br><br><br><br><br><br><br><br><br><br>
     <div>
     <form action="/alocation" method="post">
         Select time till you require resource :<br> <input type="datetime-local" name="usertime" class="button" required><br><br>

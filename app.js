@@ -149,7 +149,8 @@ app.post("/pending",function(req,res){
             res.render('accept.ejs',{namee:name});
         }
         else{   
-             res.render('Resources.ejs');
+             
+            res.render('norequests.ejs');
         }
     })
 })
@@ -181,20 +182,49 @@ app.post("/addResource",function(req,res){
                     console.log('Inserted');
                 }
             })
-            res.send({status:'Registered'});
+           res.render('admin.ejs');
         }
     })
 
 
 })
 
+app.get("/removeResource",function(req,res){
+    res.render('admin.ejs');
+})
 
+app.post("/removeResource",function(req,res){
+    var obj=mongoose.model('admin');
+    obj.deleteOne({resname:req.body.remreso},function(err,doc){
+            if (err) {
+               console.log("delete error");
+            } else {
+                console.log("delete success");
+            }
+        })
+        var obj1=mongoose.model('Request');
+        obj1.deleteOne({resourcewant:req.body.remreso},function(err,doc){
+                if (err) {
+                   console.log("delete error");
+                } else {
+                    console.log("delete success");
+                }
+            })
 
+    var obj=mongoose.model('Resource');
+    obj.deleteOne({resname:req.body.remreso},function(err,doc){
+            if (err) {
+               console.log("delete error");
+            } else {
+                console.log("delete success");
+            }
+        })
+        res.render('admin.ejs');
+    
+})
+var holder="";
+var resourcename="";
 
-
-
-
-var iffind="no";
 app.get('/Resource/:id',function(req,res){
     var c=req.param('id');
     resourcename=req.param('id');
@@ -221,8 +251,6 @@ app.get('/Resource/:id',function(req,res){
     })
 
 })
-var holder="";
-var resourcename="";
 
 app.post('/Resource/:id',function(req,res){
     var c=req.param('id');
@@ -232,7 +260,7 @@ app.post('/Resource/:id',function(req,res){
 app.get('/alocation',function(req,res){
     res.render('alocation.ejs');
 })
-
+var iffind="no";
 app.post('/alocation',function(req,res){
     Resource.find({resname:resourcename},(err,docs)=>{
         if(err){
@@ -276,7 +304,10 @@ app.post('/alocation',function(req,res){
     })
     res.render('Thanks.ejs');
 })
-
+app.get('/logout',function(req,res){
+    req.session.reset();
+    res.render('login.ejs');
+})
 app.get('/accept',function(req,res){
     res.render('accept.ejs');
 })
@@ -285,9 +316,23 @@ app.get('/back',function(req,res){
     res.render('Resources.ejs');
 })
 app.post('/back',function(req,res){
-  
-    res.render('Resources.ejs');
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("test");
+        dbo.collection("admins").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          console.log(result);
+          console.log(result[0].resname);
+          console.log(result.length);
+          for(var i=0;i<result.length;i++)
+          {
+              console.log(result[i].resname);
+          }
+          db.close();
+          res.render('Resources.ejs',{contacts:result});
+        });
         
+      });
 })
 
 app.post('/accept',function(req,res){   
@@ -357,6 +402,7 @@ app.get('/reject',function(req,res){
 
 
 app.post('/reject',function(req,res){
+
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         var dbo = db.db("test");
