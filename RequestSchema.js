@@ -8,6 +8,9 @@ var Request =new mongoose.Schema({
     },
     requestmaker :{
         type : String
+    },
+    restime :{
+        type : String
     }
 })
 mongoose.model('Request',Request);

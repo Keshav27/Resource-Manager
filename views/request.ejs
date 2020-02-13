@@ -92,8 +92,10 @@ input[type=button]{
   top: 198px;">
       </form><br><br><br><br><br><br><br><br>
     <div>
+     
     <form action="/request" method="post"><p>This resource is holded by someone so if you want to request then press request.</p>
-        <input type="submit" value="Request" class="button">
+      Select time till you require resource :<br> <input type="datetime-local" name="usertime" class="button" required><br><br>  
+      <input type="submit" value="Request" class="button">
     </form>
     <form action="/back" method="post">
         <input type ="submit" value="Go Back" class="button">
