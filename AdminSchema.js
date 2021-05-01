@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var admin =new mongoose.Schema({
-    resname :{
-        type : String
+var admin = new mongoose.Schema({
+    resname: {
+        type: String
     }
 })
-mongoose.model('admin',admin);
+mongoose.model('admin', admin);
