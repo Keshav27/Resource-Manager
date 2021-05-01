@@ -1,115 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Allocation</title>
-<style>
-input[type=text], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-input[type=datetime-local], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-#records {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+  <title>Allocation</title>
+  <style>
+    input[type=text],
+    select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
 
-#records td, #records th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
+    input[type=datetime-local],
+    select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
 
-#records tr:nth-child(even){background-color: #f2f2f2;}
+    #records {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-#records tr:hover {background-color: #ddd;}
+    #records td,
+    #records th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
 
-#records th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4CAF50;
-  color: white;
-}
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-div {
-   text-align: center;
-  
-    border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width: 250px;
-position: absolute;
-	top:10;
-	bottom: 250;
-	left: 0;
-	right: 0;
-  	
-	margin: auto;
-}
-p{
-   text-align: center;
-}
+    #records tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
 
-input[type=button]{
-  width: 20%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
- 
-  float: right;
-  
-  transition: .5s ease;
-  left: 202px;
-  top: 198px;
-    
+    #records tr:hover {
+      background-color: #ddd;
+    }
 
-}
-</style>
+    #records th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    input[type=submit] {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .mydiv {
+      text-align: center;
+      margin-top: 100px;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+      width: 250px;
+      position: absolute;
+      top: 10;
+      bottom: 250;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    input[type=button] {
+      width: 20%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+      transition: .5s ease;
+      left: 202px;
+      top: 198px;
+    }
+  </style>
 </head>
-<body>
 
-    <div>
-      
-    <form action="/Resource" method='get'>
-    <section class="home">
-      <p><b>RESOURCES</b></p>
-      
+<body>
+  <div>
+    <div class="mydiv" style="margin-top: 100px;">
+      <form action="/Resource" method='get'>
+        <section class="home">
+          <p><b>RESOURCES</b></p>
           <% for(var i=0; i<contacts.length; i++) {%>
-                  <input id=<%= contacts[i].resname %> type="submit" value=<%= contacts[i].resname %> onclick="document.forms[0].action+='/'+this.id;return true;">
-                  <br/>
-          <% } %>
-      
-      </section>
-      </form>  
-      </div>
-          <form action="/logout" method="get">
-      <input type ="submit" value="Logout" class="button" style="  width: 10%;
+            <input id=<%=contacts[i].resname %> type="submit" value=<%= contacts[i].resname %>
+              onclick="document.forms[0].action+='/'+this.id;return true;">
+              <br />
+              <% } %>
+
+        </section>
+      </form>
+    </div>
+  </div>
+  <form action="/logout" method="get">
+    <input type="submit" value="Logout" class="button" style="  width: 10%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;  
+  transition: .5s ease;
+  left: 202px;
+  top: 198px;">
+  </form><br><br><br><br>
+  <form action="/pending" method="Post">
+    <input type="submit" value="Requests" class="button" style="  width: 10%;
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -123,25 +146,9 @@ input[type=button]{
   transition: .5s ease;
   left: 202px;
   top: 198px;">
-      </form><br><br><br><br>
-      <form action="/pending" method="Post">
-      <input type ="submit" value="Requests" class="button" style="  width: 10%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
- 
-  float: right;
-  
-  transition: .5s ease;
-  left: 202px;
-  top: 198px;">
-      </form><br><br><br><br>
-      <form action="/Edit_Profile" method="get">
-        <input type ="submit" value="Edit Profile" class="button" style="  width: 10%;
+  </form><br><br><br><br>
+  <form action="/Edit_Profile" method="get">
+    <input type="submit" value="Edit Profile" class="button" style="  width: 10%;
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -155,24 +162,30 @@ input[type=button]{
     transition: .5s ease;
     left: 202px;
     top: 198px;">
-        </form>
-      
-      <table id="records" style="width:35%;float: left;left: 202px;top: 198px;">
-  <tr>
-    <th>RESOURCE</th>
-    <th>RESOURCE_TIME</th> 
-    <th>USER</th>
-  </tr>
-  <tr>
-      
-     <% for(var i=0; i<contact.length; i++) {%>
-         <tr>
-    <td><%= contact[i].resname %></td>
-    <td><%= contact[i].restime %></td>
-    <td><%= contact[i].username %></td>
-  </tr>
-  <% } %>
-       </table>
-<br><br><br><br>
+  </form>
+  <table id="records" style="width:35%;float: left;left: 202px; margin-top: -40px;">
+    <tr>
+      <th>RESOURCE</th>
+      <th>RESOURCE_TIME</th>
+      <th>USER</th>
+    </tr>
+    <tr>
+
+      <% for(var i=0; i<contact.length; i++) {%>
+    <tr>
+      <td>
+        <%= contact[i].resname %>
+      </td>
+      <td>
+        <%= contact[i].restime %>
+      </td>
+      <td>
+        <%= contact[i].username %>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+  <br><br><br><br>
 </body>
+
 </html>
