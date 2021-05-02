@@ -9,3 +9,5 @@ Features:<br>
 •	When the resource is released by the user it will automatically be allocated the next user.<br>
 •	Only admin and add and delete resources.<br>
 •	User data is stored in MongoDB.
+
+See DEMO.docs for sample screenshots of the application.
